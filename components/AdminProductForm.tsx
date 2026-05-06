@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import api from '@/services/api';
 
 interface ProductData {
   slugId: string;
@@ -19,8 +20,6 @@ interface AdminProductFormProps {
   initialData?: any;
   onCancelEdit?: () => void;
 }
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export default function AdminProductForm({ onSuccess, initialData, onCancelEdit }: AdminProductFormProps) {
   const [formData, setFormData] = useState<ProductData>({
@@ -81,22 +80,11 @@ export default function AdminProductForm({ onSuccess, initialData, onCancelEdit 
       };
 
       const token = localStorage.getItem('token');
-      const url = isEditing 
-        ? `${API_URL}/products/${initialData.slugId}`
-        : `${API_URL}/products`;
-        
-      const res = await fetch(url, {
-        method: isEditing ? 'PUT' : 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.message || 'Failed to save product');
+      
+      if (isEditing) {
+        await api.put(`/products/${initialData.slugId}`, payload);
+      } else {
+        await api.post('/products', payload);
       }
 
       setFormData({

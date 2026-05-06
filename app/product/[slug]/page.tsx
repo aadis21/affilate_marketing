@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import ProductClient from '@/components/ProductClient';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://affilate-backend.onrender.com/api';
 const FALLBACK_IMAGE = 'https://picsum.photos/seed/fallback/640/480';
 
 interface Product {
@@ -19,7 +19,7 @@ interface Product {
 
 async function getProduct(slug: string): Promise<Product | null> {
   try {
-    const res = await fetch(`${API_URL}/products/${slug}`, {
+    const res = await fetch(`${API_BASE}/products/${slug}`, {
       next: { revalidate: 3600 },
     });
     if (!res.ok) return null;
