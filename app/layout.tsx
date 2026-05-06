@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   title: "AffiliateHub – Best Deals Online",
   description:
     "Discover the best products across electronics, fashion, home, beauty and books with exclusive affiliate deals.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
